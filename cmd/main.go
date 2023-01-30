@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-
 	r := gin.Default()
 	SetupRoutes(r)
 	r.Run()

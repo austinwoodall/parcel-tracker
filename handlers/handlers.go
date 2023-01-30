@@ -86,7 +86,9 @@ func CreateTracking(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(tracker)
+	c.JSON(200, gin.H{
+		"tracker": tracker,
+	})
 }
 
 func GetTracking(c *gin.Context) {
