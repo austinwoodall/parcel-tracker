@@ -81,8 +81,7 @@ func CreateTracking(c *gin.Context) {
 		Carrier:      carrier,
 	})
 	if err != nil {
-		fmt.Println(err.Error())
-
+		fmt.Println(err)
 		c.JSON(400, gin.H{
 			"error": err.Error(),
 		})
