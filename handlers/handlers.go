@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/EasyPost/easypost-go/v2"
 	"github.com/gin-gonic/gin"
-	"parcel_tracker/utils"
 	"time"
 )
 
@@ -75,26 +74,42 @@ func CreateTracking(c *gin.Context) {
 	//apiKey := os.Getenv("EASYPOST_API_KEY")
 	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
 	trackingCode, _ := c.GetQuery("tracking_code")
-	carrier := utils.DetectCarrier(trackingCode)
-	if carrier == "Unsupported" {
-		fmt.Println("Unsupported")
-	}
+	carrier, _ := c.GetQuery("carrier")
+
 	tracker, err := client.CreateTracker(&easypost.CreateTrackerOptions{
 		TrackingCode: trackingCode,
-		Carrier:      "USPS",
+		Carrier:      carrier,
 	})
 	if err != nil {
 		fmt.Println(err.Error())
+
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"tracker": tracker,
+		})
 	}
+}
+
+func GetAllTrackingPackages(c *gin.Context) {
+	//apiKey := os.Getenv("EASYPOST_API_KEY")
+	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
+	tracker, _ := client.ListTrackers(
+		&easypost.ListTrackersOptions{},
+	)
 	c.JSON(200, gin.H{
 		"tracker": tracker,
 	})
 }
 
-func GetTracking(c *gin.Context) {
+func GetTrackingPackage(c *gin.Context) {
 	//apiKey := os.Getenv("EASYPOST_API_KEY")
 	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
 	trackerId := c.Param("id")
 	tracker, _ := client.GetTracker(trackerId)
-	fmt.Println(tracker)
+	c.JSON(200, gin.H{
+		"tracker": tracker,
+	})
 }

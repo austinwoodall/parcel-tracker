@@ -7,5 +7,6 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	r.POST("/create", handlers.CreateTracking)
-	r.GET("/track/:id", handlers.GetTracking)
+	r.GET("/track/:id", handlers.GetTrackingPackage)
+	r.GET("/track", handlers.GetAllTrackingPackages)
 }
