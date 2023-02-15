@@ -5,6 +5,7 @@ import (
 	"github.com/EasyPost/easypost-go/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 type EasyPostError struct {
@@ -23,8 +24,8 @@ type EasyPostError struct {
 }
 
 func CreateTracking(c *gin.Context) {
-	//apiKey := os.Getenv("EASYPOST_API_KEY")
-	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
+	apiKey := os.Getenv("EASYPOST_API_KEY")
+	client := easypost.New(apiKey)
 	trackingCode, _ := c.GetQuery("tracking_code")
 	carrier, _ := c.GetQuery("carrier")
 
@@ -46,8 +47,8 @@ func CreateTracking(c *gin.Context) {
 }
 
 func GetAllTrackingPackages(c *gin.Context) {
-	//apiKey := os.Getenv("EASYPOST_API_KEY")
-	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
+	apiKey := os.Getenv("EASYPOST_API_KEY")
+	client := easypost.New(apiKey)
 	tracker, _ := client.ListTrackers(
 		&easypost.ListTrackersOptions{},
 	)
@@ -57,8 +58,8 @@ func GetAllTrackingPackages(c *gin.Context) {
 }
 
 func GetTrackingPackage(c *gin.Context) {
-	//apiKey := os.Getenv("EASYPOST_API_KEY")
-	client := easypost.New("EZTK3ee39d13c9054b4182d398f7b5dde130TM1NPCThkMMO3c2NaSQuaQ")
+	apiKey := os.Getenv("EASYPOST_API_KEY")
+	client := easypost.New(apiKey)
 	trackerId := c.Param("tracking_id")
 	tracker, _ := client.GetTracker(trackerId)
 	c.JSON(200, gin.H{
